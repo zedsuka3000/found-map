@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mapbox QR Map</title>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet" />
+    <style>
+      html, body { margin: 0; padding: 0; height: 100%; }
+      #map { width: 100%; height: 100%; }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      mapboxgl.accessToken = 'pk.eyJ1IjoibWZ6ZWQiLCJhIjoiY21mMTFmbW9tMDltaTJpc2Zzc2pubGhudiJ9.phgaiYOF9Wx7jHvS140_oQ';
+      const params = new URLSearchParams(window.location.search);
+      const lat = parseFloat(params.get("lat")) || 41.0082;
+      const lng = parseFloat(params.get("lng")) || 28.9784;
+
+      const map = new mapboxgl.Map({
+        container: "map",
+        style: "mapbox://styles/mapbox/streets-v12",
+        center: [lng, lat],
+        zoom: 15
+      });
+
+      const marker = new mapboxgl.Marker({ color: "#ff3b3b" })
+        .setLngLat([lng, lat])
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25 }).setHTML(`
+            <h3>Bu noktayı buldun 🎯</h3>
+            <p>Katkı yapmak için aşağıdaki butona tıkla.</p>
+            <a href="https://tally.so/r/w4WdNd?lat=${lat}&lng=${lng}"
+              target="_blank"
+              style="background:#111;color:#fff;padding:8px 14px;border-radius:6px;text-decoration:none;font-weight:600;">
+              Katkı Yap
+            </a>
+          `)
+        )
+        .addTo(map);
+
+      marker.togglePopup();
+    </script>
+  </body>
+</html>
